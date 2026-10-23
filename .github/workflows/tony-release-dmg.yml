@@ -35,6 +35,13 @@ jobs:
         with:
           ref: ${{ steps.tag.outputs.tag }}
 
+      # Tags before the package.sh fix hardcode the long app name in the
+      # DMG verify step while the bundle is AcT.app; rewrite it in the
+      # checked-out tag so backfill dispatches against old tags work.
+      # No-op on tags that already carry the fix.
+      - name: Fix up the checked-out tag's DMG verify bundle name
+        run: sed -i '' 's|Acrobat by Tonynehihi\.app|AcT.app|g' packaging/macos/package.sh
+
       - name: Install Rust (stable)
         uses: dtolnay/rust-toolchain@stable
 
