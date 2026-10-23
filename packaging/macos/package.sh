@@ -184,7 +184,7 @@ MOUNT="$WORK/dmg-check"
 rm -rf "$MOUNT"
 mkdir -p "$MOUNT"
 hdiutil_retry attach attach -nobrowse -readonly -mountpoint "$MOUNT" "$DMG" >/dev/null
-if ! codesign --verify --strict --deep --verbose=2 "$MOUNT/Acrobat by Tonynehihi.app"; then
+if ! codesign --verify --strict --deep --verbose=2 "$MOUNT/$(basename "$APP")"; then
   hdiutil_retry detach detach "$MOUNT" >/dev/null || true
   exit 1
 fi
